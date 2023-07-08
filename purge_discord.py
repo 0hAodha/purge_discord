@@ -69,10 +69,10 @@ async def main():
         # looping through messages in to_delete list and sending the request to delete them one by one
         for message in to_delete:
 
-            # looping infinitely until message is Successfully deleted
+            # looping infinitely until message is successfully deleted
             while True:
                 async with session.request("DELETE", host + "/channels/" + channel + "/messages/" + message[0]["id"], headers=headers) as response:
-                    # if successful status returned, printing success message
+                    # if successful status returned, printing success message and breaking out of loop
                     if 200 <= response.status <= 299:
                         deleted_messages += 1
                         print("Successfully deleted message " + str(deleted_messages) + " of " + str(len(to_delete)))
