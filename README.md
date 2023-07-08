@@ -28,7 +28,7 @@ You will also need to know to your **Discord token**. The steps to find this can
 git clone https://github.com/0hAodha/purge_discord
 ```
 2. Navigate to the newly created `purge_discord` directory on your machine. 
-3. Edit the `.env` file and replace the `DISCORD_TOKEN` placeholder value with your actual Discord token. It should look something like the following: 
+3. Edit the `.env` file with your text editor of choice and replace the placeholder value of the `DISCORD_TOKEN` variable with your actual Discord token. It should look something like the following: 
 ```dotenv
 DISCORD_TOKEN=AAAAAAAAAAAAAAAAAAAAAAAAAA.BBBBBB.CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 ```
