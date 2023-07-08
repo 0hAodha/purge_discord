@@ -11,9 +11,6 @@ This script uses Discord's undocumented user API, which has no official public d
 - Python libraries:
     - `asyncio`
     - `aiohttp` 
-    - `os`
-    - `sys`
-    - `json`
     - `dotenv`
 
 You will also need to know to your **Discord token**. The steps to find this can be found [here](https://www.howtogeek.com/879956/what-is-a-discord-token-and-how-do-you-get-one/). Note that your Discord token gives anyone who has it access to your account, so ensure that you **do not share your Discord token with anyone, under any circumstances.**
