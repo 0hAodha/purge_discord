@@ -68,20 +68,24 @@ async def main():
         print("Deleting " + str(len(to_delete)) + " message(s)")
         # looping through messages in to_delete list and sending the request to delete them one by one
         for message in to_delete:
-            async with session.request("DELETE", host + "/channels/" + channel + "/messages/" + message[0]["id"], headers=headers) as response:
-                # if successful status returned, printing success message
-                if 200 <= response.status <= 299:
-                    deleted_messages += 1
-                    print("Successfully deleted message " + str(deleted_messages) + " of " + str(len(to_delete)))
 
-                # else if "Too many requests" status returned, waiting for the amount of time specified
-                elif response.status == 429:
-                    print("Rate limited by Discord. Waiting for " + str((await response.json())["retry_after"]))
-                    await asyncio.sleep((await response.json())["retry_after"])
+            # looping infinitely until message is Successfully deleted
+            while True:
+                async with session.request("DELETE", host + "/channels/" + channel + "/messages/" + message[0]["id"], headers=headers) as response:
+                    # if successful status returned, printing success message
+                    if 200 <= response.status <= 299:
+                        deleted_messages += 1
+                        print("Successfully deleted message " + str(deleted_messages) + " of " + str(len(to_delete)))
+                        break;
 
-                # otherwise, printing out json response and aborting
-                else:
-                    sys.exit("Unexpected HTTP status code received. Actual response: " + json.dumps(response.json()))
+                    # else if "Too many requests" status returned, waiting for the amount of time specified
+                    elif response.status == 429:
+                        print("Rate limited by Discord. Waiting for " + str((await response.json())["retry_after"]))
+                        await asyncio.sleep((await response.json())["retry_after"])
+
+                    # otherwise, printing out json response and aborting
+                    else:
+                        sys.exit("Unexpected HTTP status code received. Actual response: " + json.dumps(response.json()))
 
 
 if __name__ == "__main__":
