@@ -34,7 +34,7 @@ DISCORD_TOKEN=AAAAAAAAAAAAAAAAAAAAAAAAAA.BBBBBB.CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 ```
 
 ## Running the Script
-1. The script is now ready to be ran. To get usage information, you can run the script with no arguments. The usage information will be displayed every time that the script is called with valid number of arguments or with unknown flags. 
+To get usage information, you can run the script with no arguments. The usage information will be displayed every time that the script is called with valid number of arguments or with unknown flags. 
 ```bash
 ./purge_discord.py 
 ```
