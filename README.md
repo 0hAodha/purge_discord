@@ -17,7 +17,7 @@ You will also need to know to your **Discord token**. The steps to find this can
 
 ## Setup
 1. Clone this repository. 
-```shell
+```bash
 git clone https://github.com/0hAodha/purge_discord
 ```
 2. Navigate to the newly created `purge_discord` directory on your machine. 
