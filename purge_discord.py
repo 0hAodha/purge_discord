@@ -40,21 +40,30 @@ async def main():
     async with aiohttp.ClientSession() as session:
         # getting the user ID pertaining to the Discord token that the script is using
         async with session.request("GET", host + "/users/@me", headers=headers) as response:
-            json_response = await response.json() 
             try:    
-                user = json_response["id"]
+                user = (await response.json())["id"]
             except KeyError: 
-                sys.exit("User ID not found in JSON response. Actual JSON response: " + json.dumps(json_response))
+                sys.exit("User ID not found in JSON response. Actual JSON response: " + await response.json())
 
         # looping to fill up list of messages by requesting batches of messages from the API and adding them to the list
         while True:
             # searching for the next 25 messages from the user in question from the Discord API (Discord returns search results in batches of 25)
             async with session.request("GET", host + "/channels/" + str(channel) + "/messages/search?author_id=" + str(user) + "&offset=" + str(offset), headers=headers) as response:
-                json_response = await response.json()
-                try: 
-                    batch = json_response["messages"]
-                except KeyError:
-                    sys.exit("Messages not found in JSON response. Actual JSON response: " + json.dumps(json_response))
+
+                # if the channel is not yet indexed, looping until Discord indexes it
+                while True:
+                    # if the search returned an array (empty or otherwise) of messages, breaking
+                    if "messages" in (await response.json()):
+                        batch = (await response.json())["messages"]
+                        break 
+                    # assuming that a "Try again later" message was received if not messages, so trying to wait the requested interval.
+                    # if some other message was received and no interval was in the response, exiting with an error message
+                    else:
+                        try:
+                            print("Channel is not yet indexed. Waiting for " + str((await response.json())["retry_after"]) + "s as requested by the Discord API")
+                            await asyncio.sleep((await response.json())["retry_after"])
+                        except KeyError:
+                            sys.exit("Unexpected JSON response received from Discord. Actual JSON response: " + await response.json())
 
             # if the batch is not empty, adding the messages in batch to the list of messages to be deleted
             if batch:
@@ -80,7 +89,7 @@ async def main():
 
                     # else if "Too many requests" status returned, waiting for the amount of time specified
                     elif response.status == 429:
-                        print("Rate limited by Discord. Waiting for " + str((await response.json())["retry_after"]))
+                        print("Rate limited by Discord. Waiting for " + str((await response.json())["retry_after"]) + "s")
                         await asyncio.sleep((await response.json())["retry_after"])
 
                     # otherwise, printing out json response and aborting
