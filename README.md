@@ -50,7 +50,7 @@ The script can be ran either by supplying the channel ID or the channel URL. To 
 ```bash
 ./purge_discord.py -i 1234567890123456789
 ```
-Alternatively, the script can be ran by supplying the channel URL. This is simply the URL that is shown in the address bar of your browser when you navigate to that channel in the web version of the Discord application. The URL can be passed to the script as follows:
+Alternatively, the script can be ran by supplying the channel URL. This is the URL that is shown in the address bar of your browser when you navigate to that channel in the web version of the Discord application. The URL can be passed to the script as follows:
 ```bash
 ./purge_discord.py -u https://discord.com/channels/@me/1234567890123456789
 ```
