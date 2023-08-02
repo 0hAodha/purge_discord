@@ -43,7 +43,7 @@ async def main():
             try:    
                 user = (await response.json())["id"]
             except KeyError: 
-                sys.exit("User ID not found in JSON response. Actual JSON response: " + await response.json())
+                sys.exit("User ID not found in JSON response. Actual JSON response: " + json.dumps(await response.json(), indent=4))
 
         # looping to fill up list of messages by requesting batches of messages from the API and adding them to the list
         while True:
@@ -63,7 +63,7 @@ async def main():
                             print("Channel is not yet indexed. Waiting for " + str((await response.json())["retry_after"]) + "s as requested by the Discord API")
                             await asyncio.sleep((await response.json())["retry_after"])
                         except KeyError:
-                            sys.exit("Unexpected JSON response received from Discord. Actual JSON response: " + await response.json())
+                            sys.exit("Unexpected JSON response received from Discord. Actual JSON response: " + json.dumps(await response.json(), indent=4))
 
             # if the batch is not empty, adding the messages in batch to the list of messages to be deleted
             if batch:
@@ -94,7 +94,7 @@ async def main():
 
                     # otherwise, printing out json response and aborting
                     else:
-                        sys.exit("Unexpected HTTP status code received. Actual response: " + json.dumps(response.json()))
+                        sys.exit("Unexpected HTTP status code received. Actual response: " + json.dumps(response.json(), indent=4))
 
 
 if __name__ == "__main__":
