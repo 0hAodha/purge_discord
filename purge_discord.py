@@ -63,7 +63,7 @@ async def main():
                             print("Channel is not yet indexed. Waiting for " + str((await response.json())["retry_after"]) + "s as requested by the Discord API")
                             await asyncio.sleep((await response.json())["retry_after"])
                         except KeyError:
-                            sys.exit("Unexpected JSON response received from Discord. Actual JSON response: " + json.dumps(await response.json(), indent=4))
+                            sys.exit("Unexpected JSON response received from Discord after trying to search for messages. Actual JSON response: " + json.dumps(await response.json(), indent=4))
 
             # if the batch is not empty, adding the messages in batch to the list of messages to be deleted
             if batch:
