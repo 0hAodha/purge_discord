@@ -3,7 +3,7 @@
 
 This script uses Discord's undocumented User API, which has no official public documentation and is not intended to be used by anyone other than Discord's own internal developers. It is a *self-botting* script, meaning that it automates actions acting as though the user themselves were performing them manually. 
 
-**Self-botting is explicitly forbidden by the Discord Trust & Safety Team and can result in an account termination if found**. Therefore, it's not unlikely that **using this script may incur a ban on your account.** Discord's explicit condemnation of self-botting can be found [here](https://support.discord.com/hc/en-us/articles/115002192352-Automated-user-accounts-self-bots-)
+**Self-botting is explicitly forbidden by the Discord Trust & Safety Team and can result in an account termination if found**. Therefore, it's not unlikely that **using this script may incur a ban on your account.** Discord's explicit condemnation of self-botting can be found [here](https://support.discord.com/hc/en-us/articles/115002192352-Automated-user-accounts-self-bots-).
 
 # About
 `purge_discord.py` is a Discord self-botting Python script that allows the user to programmatically mass-delete all of the messages that they sent in a given Discord channel, including servers, DMs, & group chats via the Discord User API. It is primarily designed to be ran from a command-line, with the URL or ID of a channel being passed to the script as arguments. 
