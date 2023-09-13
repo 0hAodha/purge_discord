@@ -18,11 +18,22 @@ async def main():
         if sys.argv[1] == "-i" or sys.argv[1] == "--channel-id":
             channel = sys.argv[2]
         elif sys.argv[1] == "-u" or sys.argv[1] ==  "--channel-url":
+            guild = sys.argv[2].split("/")[-2]      # parsing the server (guild) ID from the URL by splitting it on `/` and taking the second last segment
             channel = sys.argv[2].split("/")[-1]    # parsing the channel ID from the URL by splitting it on `/` and taking the last segment
+
+            # setting host URL based on whether the channel is in @me or in a guild/server
+            if (guild == "@me"):
+                guild_url   = "https://discord.com/api/v9/channels/" + channel
+                channel_url = guild_url
+            else: 
+                guild_url   = "https://discord.com/api/v9/guilds/"   + guild
+                channel_url = "https://discord.com/api/v9/channels/" + channel
+
         else:
             usage()
     else:
         usage()
+
 
     # reading Discord token from the .env file. should be in the format `DISCORD_TOKEN=<insert_discord_token_here>`
     load_dotenv()
@@ -31,7 +42,6 @@ async def main():
     if not token:
         sys.exit("DISCORD_TOKEN environment variable is not set")
 
-    host = "https://discord.com/api/v10"
     headers = {"authorization": token}
     offset = 0      # messages are received from the API in batches of 25, so need to keep track of the offset when requesting to make sure no old messages are received
     to_delete = []  # list of messages to be deleted 
@@ -39,7 +49,7 @@ async def main():
     # starting asynchronous context manager to keep all HTTP requests in the one session
     async with aiohttp.ClientSession() as session:
         # getting the user ID pertaining to the Discord token that the script is using
-        async with session.request("GET", host + "/users/@me", headers=headers) as response:
+        async with session.request("GET", "https://discord.com/api/v9/users/@me", headers=headers) as response:
             try:    
                 user = (await response.json())["id"]
             except KeyError: 
@@ -48,7 +58,7 @@ async def main():
         # looping to fill up list of messages by requesting batches of messages from the API and adding them to the list
         while True:
             # searching for the next 25 messages from the user in question from the Discord API (Discord returns search results in batches of 25)
-            async with session.request("GET", host + "/channels/" + str(channel) + "/messages/search?author_id=" + str(user) + "&offset=" + str(offset), headers=headers) as response:
+            async with session.request("GET", guild_url + "/messages/search?author_id=" + str(user) + "&offset=" + str(offset), headers=headers) as response:
 
                 # if the channel is not yet indexed, looping until Discord indexes it
                 while True:
@@ -80,7 +90,7 @@ async def main():
 
             # looping infinitely until message is successfully deleted
             while True:
-                async with session.request("DELETE", host + "/channels/" + channel + "/messages/" + message[0]["id"], headers=headers) as response:
+                async with session.request("DELETE", channel_url + "/messages/" + message[0]["id"], headers=headers) as response:
                     # if successful status returned, printing success message and breaking out of loop
                     if 200 <= response.status <= 299:
                         deleted_messages += 1
@@ -94,7 +104,7 @@ async def main():
 
                     # otherwise, printing out json response and aborting
                     else:
-                        sys.exit("Unexpected HTTP status code received. Actual response: " + json.dumps(response.json(), indent=4))
+                        sys.exit("Unexpected HTTP status code received. Actual response: " + json.dumps(await response.json(), indent=4))
 
 
 if __name__ == "__main__":
