@@ -8,16 +8,17 @@ def usage():
     sys.exit("Usage: ./purge_discord.py [OPTION]... [ARGUMENT]...\n"
              "Delete all the user's messages in the given Discord channel.\n"
              "The channel may be specified using one of the following options:\n"
-             "\t-i, --channel-id        delete messages in the channel corresponding to the supplied ID\n"
+             # "\t-i, --channel-id        delete messages in the channel corresponding to the supplied ID\n"
              "\t-u, --channel-url       delete messages in the channel corresponding to the supplied URL")
 
 
 async def main():
     # parsing command-line arguments
     if len(sys.argv) == 3:
-        if sys.argv[1] == "-i" or sys.argv[1] == "--channel-id":
-            channel = sys.argv[2]
-        elif sys.argv[1] == "-u" or sys.argv[1] ==  "--channel-url":
+        # if sys.argv[1] == "-i" or sys.argv[1] == "--channel-id":
+        #     channel = sys.argv[2]
+        # elif sys.argv[1] == "-u" or sys.argv[1] ==  "--channel-url":
+        if sys.argv[1] == "-u" or sys.argv[1] ==  "--channel-url":
             guild = sys.argv[2].split("/")[-2]      # parsing the server (guild) ID from the URL by splitting it on `/` and taking the second last segment
             channel = sys.argv[2].split("/")[-1]    # parsing the channel ID from the URL by splitting it on `/` and taking the last segment
 
