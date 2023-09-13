@@ -43,12 +43,11 @@ The output should be as follows:
 Usage: ./purge_discord.py [OPTION]... [ARGUMENT]...
 Delete all the user's messages in the given Discord channel.
 The channel may be specified using one of the following options:
-	-i, --channel-id        delete messages in the channel corresponding to the supplied ID
 	-u, --channel-url       delete messages in the channel corresponding to the supplied URL
 ```
-The script can be ran either by supplying the channel ID or the channel URL. To get the ID of a channel, right-click on it in Discord and click the "Copy channel ID" option in the context menu. The ID can then be passed to the script as follows:
+~~The script can be ran either by supplying the channel ID or the channel URL. To get the ID of a channel, right-click on it in Discord and click the "Copy channel ID" option in the context menu. The ID can then be passed to the script as follows:~~ This feature has been temporarily removed due to changes in the Discord API.
 ```bash
-./purge_discord.py -i 1234567890123456789
+# ./purge_discord.py -i 1234567890123456789 # REMOVED 
 ```
 Alternatively, the script can be ran by supplying the channel URL. This is the URL that is shown in the address bar of your browser when you navigate to that channel in the web version of the Discord application. The URL can be passed to the script as follows:
 ```bash
