@@ -72,7 +72,9 @@ async def main():
                     # if some other message was received and no interval was in the response, exiting with an error message
                     else:
                         try:
+                            print(json.dumps(await response.json(), indent=4))
                             print("Channel is not yet indexed. Waiting for " + str((await response.json())["retry_after"]) + "s as requested by the Discord API")
+                            sys.exit(1)
                             await asyncio.sleep((await response.json())["retry_after"])
                         except KeyError:
                             print("Unexpected JSON response received from Discord after trying to search for messages. Actual JSON response: " + json.dumps(await response.json(), indent=4))
@@ -90,6 +92,10 @@ async def main():
         print("Deleting " + str(len(to_delete)) + " message(s)")
         # looping through messages in to_delete list and sending the request to delete them one by one
         for message in to_delete:
+            print(message)
+
+            if message[0]["type"] == 1:
+                break
 
             # looping infinitely until message is successfully deleted
             while True:
@@ -100,6 +106,12 @@ async def main():
                         print("Successfully deleted message " + str(deleted_messages) + " of " + str(len(to_delete)))
                         break;
 
+                    # else if "forbidden" status returned, continuing
+                    elif response.status == 403:
+                        print("Failed to delete message: Error 403 – " + (await response.json())["message"])
+                        # deleted_messages += 1
+                        break
+
                     # else if "Too many requests" status returned, waiting for the amount of time specified
                     elif response.status == 429:
                         print("Rate limited by Discord. Waiting for " + str((await response.json())["retry_after"]) + "s")
@@ -107,6 +119,7 @@ async def main():
 
                     # otherwise, printing out json response and aborting
                     else:
+                        print(response.status)
                         print("Unexpected HTTP status code received. Actual response: " + json.dumps(await response.json(), indent=4))
                         sys.exit(1)
 
