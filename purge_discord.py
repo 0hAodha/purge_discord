@@ -92,8 +92,7 @@ async def main():
         print("Deleting " + str(len(to_delete)) + " message(s)")
         # looping through messages in to_delete list and sending the request to delete them one by one
         for message in to_delete:
-            print(message)
-
+            # if message is a system message
             if message[0]["type"] == 1:
                 break
 
