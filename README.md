@@ -1,3 +1,5 @@
+<img src="./icon.png" alt="icon" width="20" style="vertical-align: middle;">
+
 # DISCLAIMER 
 **The author of this script takes ABSOLUTELY NO RESPONSIBILITY for your own actions or usage of the script, and if you do choose to use this script, you do so ENTIRELY AT YOUR OWN RISK.**
 
